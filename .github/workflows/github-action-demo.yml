@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: GitHub Actions Workflow LuisLobaton
 
 on:
   push:
@@ -6,27 +6,38 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  Saludar-Hello-World:
+  validate-and-test:
+    name: Validar e Imprimir Entorno
     runs-on: ubuntu-latest
+    environment: dev
+
     steps:
-      - name: Mensaje de inicio
-        run: echo "Este job ha sido ejecutado por ${{ github.event_name }}"
-
-      - name: Informacion de la rama y repositorio
-        run: echo "El nombre de la rama es ${{ github.ref }} y el repositorio es ${{ github.repository }}"
-
-      # Correccion del error del profesor: se usa v4 en lugar de v6
-      - name: Checkout repository
+      - name: Checkout del Repositorio
         uses: actions/checkout@v4
 
-      - name: Listar los archivos del repositorio
-        run: |
-          ls ${{ github.workspace }}
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      # Prueba de ejecucion de la variable configurada
-      - name: Probar variable AWS_ROLE_ARN
+      - name: Imprimir Variables de Entorno de LuisLobaton
         env:
-          ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+          REGION: ${{ vars.AWS_REGION }}
+          ROLE: ${{ vars.AWS_ROLE_ARN }}
+          BUCKET: ${{ vars.TF_STATE_BUCKET }}
         run: |
-          echo "El rol configurado es: $ROLE_ARN"
+          echo "=========================================="
+          echo "REPOSITORIO: LuisLobaton/Sistema-Web-Odontog-gico"
+          echo "REGION CONFIGURADA: $REGION"
+          echo "ROLE ARN CONFIGURADO: $ROLE"
+          echo "S3 STATE BUCKET: $BUCKET"
+          echo "=========================================="
+
+      - name: Terraform Init (Modo Inicial)
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
