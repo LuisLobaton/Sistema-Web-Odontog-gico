@@ -9,21 +9,22 @@ jobs:
   Saludar-Hello-World:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Este job ha sido ejecutado por un evento ${{ github.event_name }}"
-      - run: echo "El nombre de la rama es ${{ github.ref }} y el repositorio es ${{ github.repository }}"
-      
       - name: Checkout repository
         uses: actions/checkout@v4
-        
-      - name: Listar los archivos del repositorio
+
+      - name: Setup HashiCorp Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Install Ansible
         run: |
-          ls ${{ github.workspace }}
-          
-      - name: Hello Terraform
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Verify Terraform
         run: terraform --version
-        
-      - name: Hello Ansible
+
+      - name: Verify Ansible
         run: ansible --version
-        
-      - name: Hello AWS CLI
+
+      - name: Verify AWS CLI
         run: aws --version
