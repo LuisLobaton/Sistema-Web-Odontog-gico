@@ -1,60 +1,48 @@
-variable "project_name" {
-  description = "Nombre del proyecto"
-  type        = string
-  default     = "proyecto-iac"
-}
-
 variable "aws_region" {
-  description = "Region de AWS donde se desplegara la infraestructura"
+  description = "Región de AWS donde se desplegará la infraestructura"
   type        = string
   default     = "us-east-1"
 }
 
+variable "project_name" {
+  description = "Nombre del proyecto para etiquetas"
+  type        = string
+  default     = "odontologia"
+}
+
 variable "environment" {
-  description = "Entorno de trabajo"
+  description = "Entorno de despliegue"
   type        = string
   default     = "dev"
 }
 
-variable "backend_port" {
-  description = "Puerto interno del backend Node.js"
-  type        = number
-  default     = 3000
+variable "vpc_cidr" {
+  description = "Bloque CIDR para la VPC"
+  type        = string
+  default     = "10.0.0.0/16"
 }
 
-variable "postgres_port" {
-  description = "Puerto de PostgreSQL"
-  type        = number
-  default     = 5432
+variable "ami_id" {
+  description = "ID de la AMI de Amazon Linux para las instancias EC2"
+  type        = string
+  default     = "ami-0c7217cdde317cfec"
 }
 
 variable "instance_type" {
-  description = "Tipo de instancia EC2 para el backend"
+  description = "Tipo de instancia para las máquinas EC2"
   type        = string
-  default     = "t3.small"
+  default     = "t2.micro"
 }
 
-variable "min_instances" {
-  description = "Cantidad minima de instancias EC2"
-  type        = number
-  default     = 2
-}
-
-variable "desired_instances" {
-  description = "Cantidad inicial deseada de instancias EC2"
-  type        = number
-  default     = 2
-}
-
-variable "max_instances" {
-  description = "Cantidad maxima de instancias EC2"
-  type        = number
-  default     = 4
-}
-
-
-variable "acm_certificate_arn" {
-  description = "ARN del certificado ACM para HTTPS en el ALB"
+variable "db_pass" {
+  description = "Contraseña para la base de datos RDS y Secrets Manager"
   type        = string
-  default     = ""
+  sensitive   = true
+  default     = "ContrasenaSegura2026!"
+}
+
+variable "private_subnet_ids" {
+  description = "Lista de IDs de subredes privadas para el ASG"
+  type        = list(string)
+  default     = ["subnet-12345678", "subnet-87654321"]
 }
