@@ -35,14 +35,7 @@ variable "instance_type" {
 }
 
 variable "db_pass" {
-  description = "Contraseña para la base de datos RDS y Secrets Manager"
+  description = "Contraseña para RDS y Secrets Manager. Se proporciona mediante una variable de entorno."
   type        = string
   sensitive   = true
-  default     = "ContrasenaSegura2026!"
-}
-
-variable "private_subnet_ids" {
-  description = "Lista de IDs de subredes privadas para el ASG"
-  type        = list(string)
-  default     = ["subnet-12345678", "subnet-87654321"]
 }
