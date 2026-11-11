@@ -3,6 +3,11 @@ resource "aws_launch_template" "app_template" {
   image_id      = var.ami_id
   instance_type = var.instance_type
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   network_interfaces {
     associate_public_ip_address = false
     security_groups             = [aws_security_group.ec2_sg.id]
@@ -29,7 +34,7 @@ resource "aws_autoscaling_group" "app_asg" {
   desired_capacity    = 2
   max_size            = 4
   min_size            = 1
-  vpc_zone_identifier = var.private_subnet_ids
+  vpc_zone_identifier = aws_subnet.private_app[*].id
 
   launch_template {
     id      = aws_launch_template.app_template.id
@@ -39,6 +44,18 @@ resource "aws_autoscaling_group" "app_asg" {
   tag {
     key                 = "Name"
     value               = "EC2-Odontologia-Instance"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Environment"
+    value               = var.environment
     propagate_at_launch = true
   }
 }

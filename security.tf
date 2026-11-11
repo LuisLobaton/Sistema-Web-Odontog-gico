@@ -1,10 +1,13 @@
 resource "aws_secretsmanager_secret" "db_secret" {
+  #checkov:skip=CKV_AWS_149: Se utiliza la clave administrada por AWS para Secrets Manager, evitando una CMK adicional.
+
   name        = "odontologia/db_credentials"
   description = "Credenciales para la base de datos MySQL de citas"
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret_val" {
-  secret_id     = aws_secretsmanager_secret.db_secret.id
+  secret_id = aws_secretsmanager_secret.db_secret.id
+
   secret_string = jsonencode({
     username = "admin_citas"
     password = var.db_pass

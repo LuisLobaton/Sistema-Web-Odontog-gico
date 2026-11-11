@@ -1,9 +1,11 @@
 resource "aws_lb" "app_alb" {
-  name               = "${var.project_name}-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.ec2_sg.id]
-  subnets            = var.private_subnet_ids
+  name                       = "${var.project_name}-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb_sg.id]
+  subnets                    = aws_subnet.public[*].id
+  enable_deletion_protection = true
+  drop_invalid_header_fields = true
 
   tags = {
     Name        = "${var.project_name}-alb"
@@ -26,7 +28,7 @@ resource "aws_lb_target_group" "app_tg" {
 
 resource "aws_lb_listener" "app_listener" {
   load_balancer_arn = aws_lb.app_alb.arn
-  port              = "80"
+  port              = 80
   protocol          = "HTTP"
 
   default_action {

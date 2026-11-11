@@ -1,4 +1,38 @@
+# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfplan
+*.tfplan.*
+*.plan
 *.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Planes e informes locales (solo raíz del proyecto)
+/plan*.json
+/checkov*.txt
+
+# Credenciales y secretos
+.env
+.env.*
+!.env.example
+.aws/
+*.pem
+*.key
+*.p12
+*.pfx
+*.secret
+
+# Registros
+*.log
+
+# Sistema operativo
+.DS_Store
