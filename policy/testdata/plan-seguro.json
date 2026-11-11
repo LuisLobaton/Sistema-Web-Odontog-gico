@@ -1,0 +1,34 @@
+{
+  "resource_changes": [
+    {
+      "address": "aws_security_group.seguro",
+      "type": "aws_security_group",
+      "change": {
+        "after": {
+          "ingress": [
+            {
+              "from_port": 80,
+              "to_port": 80,
+              "protocol": "tcp",
+              "cidr_blocks": ["10.0.0.0/16"]
+            }
+          ],
+          "tags": {
+            "Project": "odontologia"
+          }
+        }
+      }
+    },
+    {
+      "address": "aws_vpc.main",
+      "type": "aws_vpc",
+      "change": {
+        "after": {
+          "tags": {
+            "Project": "odontologia"
+          }
+        }
+      }
+    }
+  ]
+}
