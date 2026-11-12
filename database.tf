@@ -27,6 +27,14 @@ resource "aws_db_instance" "app_db" {
   auto_minor_version_upgrade          = true
   copy_tags_to_snapshot               = true
 
+  # Monitoreo avanzado de RDS
+  monitoring_interval = 60
+  monitoring_role_arn = aws_iam_role.rds_monitoring_role.arn
+
   skip_final_snapshot = true
   deletion_protection = true
+
+  depends_on = [
+    aws_iam_role_policy_attachment.rds_monitoring_policy
+  ]
 }
